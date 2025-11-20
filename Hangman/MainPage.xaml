@@ -73,13 +73,16 @@
                                TextColor="#FFFFFF"
                                FontSize="14"
                                HorizontalOptions="Center"/>
-                        <Label x:Name="CategoryLabel"
+                        <Picker x:Name="CategoryLabel" Title="Select a Category" TitleColor="White">
+                            
+                        </Picker>
+                        <!--<Label x:Name="CategoryLabel"
                                Text="{Binding CategoryText}" 
                                TextColor="White"
                                FontSize="18"
                                FontAttributes="Bold"
                                HorizontalOptions="Center"
-                               Margin="0,5,0,0"/>
+                               Margin="0,5,0,0"/>-->
                     </StackLayout>
                 </Frame>
 

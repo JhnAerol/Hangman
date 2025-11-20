@@ -13,15 +13,8 @@ namespace Hangman
         //INotifyPropertyChanged Implementation
         public event PropertyChangedEventHandler PropertyChanged;
 
-        //Game State
-        private string currentWord;
-        private string currentCategory;
-        private List<char> guessedLetters;
-        private int wrongGuesses;
-        private const int maxWrongGuesses = 4;
-
         //Word Categories
-        private Dictionary<string, List<string>> wordCategories = new Dictionary<string, List<string>>()
+        static Dictionary<string, List<string>> wordCategories = new Dictionary<string, List<string>>()
         {
             { "ANIMALS", new List<string> { "ELEPHANT", "GIRAFFE", "DOLPHIN", "PENGUIN", "CHEETAH", "KANGAROO" } },
             { "FRUITS", new List<string> { "BANANA", "ORANGE", "PINEAPPLE", "STRAWBERRY", "WATERMELON" } },
@@ -29,9 +22,17 @@ namespace Hangman
             { "SPORTS", new List<string> { "BASKETBALL", "FOOTBALL", "TENNIS", "SWIMMING", "BASEBALL" } }
         };
 
+        //Game State
+        private string currentWord;
+        List<string> currentCategory = new List<string>(wordCategories.Keys);
+        private List<char> guessedLetters;
+        private int wrongGuesses;
+        private const int maxWrongGuesses = 4;
+
+
         // Bindable Properties
-        private string categoryText;
-        public string CategoryText
+        private List<string> categoryText;
+        public List<string> CategoryText
         {
             get => categoryText;
             set
@@ -188,11 +189,10 @@ namespace Hangman
             //Select random category and word
             var random = new Random();
             var categoryIndex = random.Next(wordCategories.Count);
-            var category = wordCategories.Keys.ElementAt(categoryIndex);
-            currentCategory = category;
+            var category = wordCategories.Keys;
 
-            var words = wordCategories[category];
-            currentWord = words[random.Next(words.Count)];
+            //var words = wordCategories[category];
+            //currentWord = words[random.Next(words.Count)];
 
             //Update UI
             CategoryText = currentCategory;
@@ -243,19 +243,19 @@ namespace Hangman
         //Update the displayed word with guessed letters
         private void UpdateWordDisplay()
         {
-            string display = "";
-            foreach (char letter in currentWord)
-            {
-                if (guessedLetters.Contains(letter))
-                {
-                    display += letter + " ";
-                }
-                else
-                {
-                    display += "_ ";
-                }
-            }
-            WordDisplay = display.Trim();
+            //string display = "";
+            //foreach (char letter in currentWord)
+            //{
+            //    if (guessedLetters.Contains(letter))
+            //    {
+            //        display += letter + " ";
+            //    }
+            //    else
+            //    {
+            //        display += "_ ";
+            //    }
+            //}
+            //WordDisplay = display.Trim();
         }
 
         //Update hangman image based on wrong guesses
