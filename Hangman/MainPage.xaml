@@ -73,9 +73,11 @@
                                TextColor="#FFFFFF"
                                FontSize="14"
                                HorizontalOptions="Center"/>
-                        <Picker x:Name="CategoryLabel" Title="Select a Category" TitleColor="White">
-                            
-                        </Picker>
+                        <Picker x:Name="CategoryLabel" 
+                                Title="Select a Category" 
+                                TitleColor="White"
+                                ItemsSource="{Binding CategoryText}"
+                                SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"/>
                         <!--<Label x:Name="CategoryLabel"
                                Text="{Binding CategoryText}" 
                                TextColor="White"

@@ -42,6 +42,18 @@ namespace Hangman
             }
         }
 
+        private string selectedCategory;
+        public string SelectedCategory
+        {
+            get => selectedCategory;
+            set
+            {
+                selectedCategory = value;
+                SelectingCategory();
+                OnPropertyChanged();
+            }
+        }
+
         //Displayed word with underscores
         private string wordDisplay;
         public string WordDisplay
@@ -180,23 +192,36 @@ namespace Hangman
             StartNewGame();
         }
 
+        public void SelectingCategory()
+        {
+            var selectedCategory = SelectedCategory;
+
+            DoneSelectedCategory(selectedCategory);
+            UpdateWordDisplay();
+        }
+
+        public void DoneSelectedCategory(string category)
+        {
+            var random = new Random();
+            var words = wordCategories[category];
+            currentWord = words[random.Next(words.Count)];
+            UpdateWordDisplay();
+        }
+
         //Start a new game
         public void StartNewGame()
         {
             guessedLetters = new List<char>();
             wrongGuesses = 0;
 
-            //Select random category and word
-            var random = new Random();
-            var categoryIndex = random.Next(wordCategories.Count);
-            var category = wordCategories.Keys;
-
-            //var words = wordCategories[category];
-            //currentWord = words[random.Next(words.Count)];
+            ////Select random category and word
+            //var random = new Random();
+            //var categoryIndex = random.Next(wordCategories.Count);
+            //var category = wordCategories.Keys;
 
             //Update UI
             CategoryText = currentCategory;
-            UpdateWordDisplay();
+            //UpdateWordDisplay();
             UpdateHangmanImage();
             UpdateStageDisplay();
 
@@ -243,19 +268,19 @@ namespace Hangman
         //Update the displayed word with guessed letters
         private void UpdateWordDisplay()
         {
-            //string display = "";
-            //foreach (char letter in currentWord)
-            //{
-            //    if (guessedLetters.Contains(letter))
-            //    {
-            //        display += letter + " ";
-            //    }
-            //    else
-            //    {
-            //        display += "_ ";
-            //    }
-            //}
-            //WordDisplay = display.Trim();
+            string display = "";
+            foreach (char letter in currentWord)
+            {
+                if (guessedLetters.Contains(letter))
+                {
+                    display += letter + " ";
+                }
+                else
+                {
+                    display += "_ ";
+                }
+            }
+            WordDisplay = display.Trim();
         }
 
         //Update hangman image based on wrong guesses
