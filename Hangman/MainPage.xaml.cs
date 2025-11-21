@@ -41,20 +41,46 @@
         }
 
         //Handle letter button clicks
-        private void OnLetterClicked(object sender, EventArgs e)
+        private async void OnLetterClicked(object sender, EventArgs e)
         {
-            var button = (ImageButton)sender;
-            char letter = (char)button.BindingContext;
+            if(viewModel.SelectedCategory != null)
+            {
+                var button = (ImageButton)sender;
+                char letter = (char)button.BindingContext;
 
-            if (viewModel.IsLetterGuessed(letter))
-                return;
+                if (viewModel.IsLetterGuessed(letter))
+                    return;
 
-            //Disable the button visually
-            button.Opacity = 0.3;
-            button.IsEnabled = false;
+                //Disable the button visually
+                button.Opacity = 0.3;
+                button.IsEnabled = false;
 
-            // Call ViewModel method
-            viewModel.OnLetterClicked(letter);
+                // Call ViewModel method
+                viewModel.OnLetterClicked(letter);
+            }
+            else
+            {
+                await ShowErrorFeedback();
+                await Task.Delay(2000);
+                HideFeedback();
+            }
+        }
+
+        private async Task ShowErrorFeedback()
+        {
+            feedbackBorder.BackgroundColor = Color.FromArgb("#F44336");
+            feedbackMessage.Text = "Pick a Category first!";
+            feedbackBorder.IsVisible = true;
+
+            await feedbackBorder.TranslateTo(-10, 0, 50);
+            await feedbackBorder.TranslateTo(10, 0, 50);
+            await feedbackBorder.TranslateTo(-10, 0, 50);
+            await feedbackBorder.TranslateTo(0, 0, 50);
+        }
+
+        private void HideFeedback()
+        {
+            feedbackBorder.IsVisible = false;
         }
 
         //Handle Play Again button click
@@ -70,6 +96,8 @@
                 }
             }
 
+            CategoryLabel.SelectedItem = null;
+
             // Call ViewModel method
             viewModel.OnPlayAgain();
         }
@@ -78,6 +106,22 @@
         private void OnQuitClicked(object sender, EventArgs e)
         {
             viewModel.OnQuit();
+        }
+
+        private void CategoryLabel_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            foreach (var child in LettersContainer.Children)
+            {
+                if (child is ImageButton button)
+                {
+                    button.IsEnabled = true;
+                    button.Opacity = 1.0;
+                }
+            }
+
+            viewModel.OnPlayAgain();
+            viewModel.SelectingCategory();
+            viewModel.guessedLetters.Clear();
         }
     }
 }

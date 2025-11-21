@@ -16,7 +16,7 @@
 
         <!--ScrollView for entire content-->
         <ScrollView Grid.Row="0">
-            <Grid RowDefinitions="Auto,*,Auto,Auto,Auto"
+            <Grid RowDefinitions="Auto,*,Auto,Auto,Auto,Auto"
                   Padding="20,5"
                   RowSpacing="20">
 
@@ -61,8 +61,34 @@
                            Aspect="AspectFit"/>
                 </Grid>
 
+                <Border Grid.Row="2"
+                        x:Name="feedbackBorder"
+                        IsVisible="False"
+                        Padding="15"
+                        StrokeThickness="0"
+                        BackgroundColor="#4CAF50">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow Brush="Black"
+                                Offset="0,4"
+                                Radius="8"
+                                Opacity="0.3" />
+                    </Border.Shadow>
+
+                    <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                        <Label x:Name="feedbackMessage"
+                               Text="Correct!"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                </Border>
+
                 <!--Category-->
-                <Frame Grid.Row="2" 
+                <Frame Grid.Row="3" 
                        BackgroundColor="#2a2a2a"
                        BorderColor="#444"
                        CornerRadius="10"
@@ -77,19 +103,15 @@
                                 Title="Select a Category" 
                                 TitleColor="White"
                                 ItemsSource="{Binding CategoryText}"
-                                SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"/>
-                        <!--<Label x:Name="CategoryLabel"
-                               Text="{Binding CategoryText}" 
-                               TextColor="White"
-                               FontSize="18"
-                               FontAttributes="Bold"
-                               HorizontalOptions="Center"
-                               Margin="0,5,0,0"/>-->
+                                SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"
+                                TextColor="White"
+                                HorizontalTextAlignment="Center"
+                                SelectedIndexChanged="CategoryLabel_SelectedIndexChanged"/>
                     </StackLayout>
                 </Frame>
 
                 <!--Guess Word Display-->
-                <Frame Grid.Row="3" 
+                <Frame Grid.Row="4" 
                        BackgroundColor="#2a2a2a"
                        BorderColor="#444"
                        CornerRadius="10"
@@ -112,7 +134,7 @@
                 </Frame>
 
                 <!--Letters Grid-->
-                <Frame Grid.Row="4" 
+                <Frame Grid.Row="5" 
                        BackgroundColor="#2a2a2a"
                        BorderColor="#444"
                        CornerRadius="10"

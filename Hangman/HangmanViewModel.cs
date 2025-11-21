@@ -16,16 +16,17 @@ namespace Hangman
         //Word Categories
         static Dictionary<string, List<string>> wordCategories = new Dictionary<string, List<string>>()
         {
-            { "ANIMALS", new List<string> { "ELEPHANT", "GIRAFFE", "DOLPHIN", "PENGUIN", "CHEETAH", "KANGAROO" } },
-            { "FRUITS", new List<string> { "BANANA", "ORANGE", "PINEAPPLE", "STRAWBERRY", "WATERMELON" } },
-            { "COUNTRIES", new List<string> { "CANADA", "BRAZIL", "AUSTRALIA", "JAPAN", "FRANCE", "ITALY" } },
-            { "SPORTS", new List<string> { "BASKETBALL", "FOOTBALL", "TENNIS", "SWIMMING", "BASEBALL" } }
+            { "ANIMALS", new List<string>{ "ELEPHANT", "GIRAFFE", "DOLPHIN", "PENGUIN", "CHEETAH", "KANGAROO", "ZEBRA", "TIGER", "LION", "RHINOCEROS" }},
+            { "FRUITS", new List<string>{ "BANANA", "ORANGE", "PINEAPPLE", "STRAWBERRY", "WATERMELON", "MANGO", "GRAPES", "BLUEBERRY", "PAPAYA", "APPLE" }},
+            { "COUNTRIES", new List<string>{ "CANADA", "BRAZIL", "AUSTRALIA", "JAPAN", "FRANCE", "ITALY", "GERMANY", "NORWAY", "PHILIPPINES", "SOUTH KOREA" }},
+            { "SPORTS", new List<string>{ "BASKETBALL", "FOOTBALL", "TENNIS", "SWIMMING", "BASEBALL", "VOLLEYBALL", "BADMINTON", "BOXING", "GOLF", "TABLE TENNIS" }},
+            { "COLORS", new List<string>{ "RED", "BLUE", "GREEN", "YELLOW", "ORANGE", "PURPLE", "BLACK", "WHITE", "PINK", "BROWN" }}
         };
 
         //Game State
-        private string currentWord;
+        private string? currentWord;
         List<string> currentCategory = new List<string>(wordCategories.Keys);
-        private List<char> guessedLetters;
+        public List<char> guessedLetters;
         private int wrongGuesses;
         private const int maxWrongGuesses = 4;
 
@@ -49,7 +50,6 @@ namespace Hangman
             set
             {
                 selectedCategory = value;
-                SelectingCategory();
                 OnPropertyChanged();
             }
         }
@@ -202,10 +202,12 @@ namespace Hangman
 
         public void DoneSelectedCategory(string category)
         {
-            var random = new Random();
-            var words = wordCategories[category];
-            currentWord = words[random.Next(words.Count)];
-            UpdateWordDisplay();
+            if(category != null)
+            {
+                var random = new Random();
+                var words = wordCategories[category];
+                currentWord = words[random.Next(words.Count)];
+            }
         }
 
         //Start a new game
@@ -213,15 +215,11 @@ namespace Hangman
         {
             guessedLetters = new List<char>();
             wrongGuesses = 0;
-
-            ////Select random category and word
-            //var random = new Random();
-            //var categoryIndex = random.Next(wordCategories.Count);
-            //var category = wordCategories.Keys;
+            currentWord = null;
 
             //Update UI
             CategoryText = currentCategory;
-            //UpdateWordDisplay();
+            UpdateWordDisplay();
             UpdateHangmanImage();
             UpdateStageDisplay();
 
@@ -269,15 +267,19 @@ namespace Hangman
         private void UpdateWordDisplay()
         {
             string display = "";
-            foreach (char letter in currentWord)
+            if (currentWord != null)
             {
-                if (guessedLetters.Contains(letter))
+                foreach (char letter in currentWord)
                 {
-                    display += letter + " ";
-                }
-                else
-                {
-                    display += "_ ";
+
+                    if (guessedLetters.Contains(letter))
+                    {
+                        display += letter + " ";
+                    }
+                    else
+                    {
+                        display += "_ ";
+                    }
                 }
             }
             WordDisplay = display.Trim();
